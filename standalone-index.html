@@ -1,0 +1,794 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGRO CYCLE - Crop Yield Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border-color: #ebedf0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fafaf9;
+      color: #1f1e1c;
+      line-height: 1.6;
+    }
+
+    /* Custom variables */
+    :root {
+      --agro-green: #7CB342;
+      --agro-green-dark: #558B2F;
+      --agro-green-light: #C5E1A5;
+      --agro-blue: #64B5F6;
+      --agro-blue-dark: #1E88E5;
+      --agro-blue-light: #BBDEFB;
+      --agro-earth: #8D6E63;
+      --agro-earth-dark: #4E342E;
+      --agro-earth-light: #D7CCC8;
+      --border-color: #ebedf0;
+      --border-radius: 0.75rem;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 0.5em;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 0;
+      z-index: 1000;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(to right, var(--agro-green), var(--agro-blue-dark));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li {
+      margin-left: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--agro-earth);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--agro-green);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--agro-earth);
+      cursor: pointer;
+    }
+
+    /* Hero section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(197, 225, 165, 0.15) 0%, rgba(187, 222, 251, 0.15) 100%);
+      padding: 5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB4PSIwIiB5PSIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSgzMCkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyIiBoZWlnaHQ9IjIiIGZpbGw9IiM4RDZFNjMiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+      opacity: 0.7;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--agro-earth-dark);
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--agro-earth);
+      margin-bottom: 2rem;
+    }
+
+    .hero-img-container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background-color: var(--agro-green);
+      color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--agro-green-dark);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--agro-earth-dark);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+      margin-left: 1rem;
+    }
+
+    .btn-secondary:hover {
+      background-color: #f8f9fa;
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .btn-icon {
+      margin-left: 0.5rem;
+    }
+
+    /* Features section */
+    .features {
+      padding: 5rem 0;
+      background-color: white;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      color: var(--agro-earth-dark);
+      margin-bottom: 1rem;
+    }
+
+    .section-description {
+      font-size: 1.1rem;
+      color: var(--agro-earth);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .feature-card {
+      background-color: #fff;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background-color: rgba(197, 225, 165, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-icon svg {
+      width: 30px;
+      height: 30px;
+      color: var(--agro-green);
+    }
+
+    .feature-card:nth-child(2) .feature-icon {
+      background-color: rgba(187, 222, 251, 0.3);
+    }
+
+    .feature-card:nth-child(2) .feature-icon svg {
+      color: var(--agro-blue);
+    }
+
+    .feature-card:nth-child(3) .feature-icon {
+      background-color: rgba(215, 204, 200, 0.3);
+    }
+
+    .feature-card:nth-child(3) .feature-icon svg {
+      color: var(--agro-earth);
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      color: var(--agro-earth-dark);
+      margin-bottom: 1rem;
+    }
+
+    .feature-description {
+      color: var(--agro-earth);
+      line-height: 1.6;
+    }
+
+    /* How it works section */
+    .how-it-works {
+      padding: 5rem 0;
+      background-color: #f8f9fa;
+    }
+
+    .steps-container {
+      margin-top: 4rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 3rem;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background-color: var(--agro-green);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.125rem;
+      flex-shrink: 0;
+      margin-right: 1.5rem;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      color: var(--agro-earth-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-description {
+      color: var(--agro-earth);
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #f7f5f2;
+      padding: 3rem 0;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    .footer-heading {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--agro-earth-dark);
+    }
+
+    .footer-list {
+      list-style: none;
+    }
+
+    .footer-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-list a {
+      color: var(--agro-earth);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-list a:hover {
+      color: var(--agro-green);
+    }
+
+    .footer-address {
+      font-style: normal;
+      color: var(--agro-earth);
+    }
+
+    .footer-address p {
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-address a {
+      color: var(--agro-earth);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-address a:hover {
+      color: var(--agro-green);
+    }
+
+    .footer-bottom {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(141, 110, 99, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .footer-bottom p {
+      color: var(--agro-earth);
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-bottom p {
+        margin-bottom: 0;
+      }
+    }
+
+    /* Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links li {
+        margin: 0.5rem 0;
+        margin-left: 0;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 7rem 0 3rem;
+      }
+
+      .hero-content {
+        margin: 0 auto;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .hero-img-container {
+        margin-top: 3rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+
+    /* Delay animations */
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+    .delay-5 { transition-delay: 0.5s; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="logo">AGRO CYCLE</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="data-input.html">Data Input</a></li>
+        <li><a href="results.html">Results</a></li>
+        <li><a href="insights.html">Insights</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="row" style="display: flex; flex-wrap: wrap; align-items: center;">
+        <div class="hero-content reveal">
+          <h1 class="hero-title">Crop Yield Prediction Using Machine Learning</h1>
+          <p class="hero-subtitle">
+            Leverage cutting-edge technology to optimize your farming practices and maximize crop yields. Our machine learning model analyzes soil, weather, and historical data to provide accurate yield predictions.
+          </p>
+          <div>
+            <a href="data-input.html" class="btn btn-primary">
+              Get Started
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </a>
+            <a href="about.html" class="btn btn-secondary">
+              Learn More
+            </a>
+          </div>
+        </div>
+        <div class="hero-img-container reveal delay-2" style="flex: 1; margin-left: 2rem; display: flex; justify-content: flex-end;">
+          <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Crop Field" class="hero-img" style="max-width: 450px;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title">Our Features</h2>
+        <p class="section-description">
+          AGRO CYCLE combines advanced machine learning algorithms with agricultural expertise to provide farmers with actionable insights and predictions.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal delay-1">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+              <path d="M12 8a2.828 2.828 0 1 1 0 5.656 2.828 2.828 0 0 1 0-5.656"></path>
+              <path d="M17 18.87V16a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v2.875"></path>
+              <path d="M17 18.875C17 19.496 16.5 20 15.875 20H8.125C7.5 20 7 19.496 7 18.875V17c0-.621.5-1.125 1.125-1.125h7.75c.625 0 1.125.504 1.125 1.125v1.875Z"></path>
+              <path d="M12 16v4"></path>
+            </svg>
+          </div>
+          <h3 class="feature-title">Accurate Yield Prediction</h3>
+          <p class="feature-description">
+            Our advanced machine learning algorithms analyze multiple factors to predict crop yields with high accuracy, helping farmers make informed decisions.
+          </p>
+        </div>
+
+        <div class="feature-card reveal delay-2">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
+              <path d="M22 10a3 3 0 0 0-3-3h-2.207a5.502 5.502 0 0 0-10.702.5"></path>
+            </svg>
+          </div>
+          <h3 class="feature-title">Weather Impact Analysis</h3>
+          <p class="feature-description">
+            Understand how weather patterns affect your crop performance with detailed analysis and recommendations for adaptation strategies.
+          </p>
+        </div>
+
+        <div class="feature-card reveal delay-3">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m2 22 1-1h3l9-9"></path>
+              <path d="M3 21v-3l9-9"></path>
+              <path d="m15 6 3-3 3 3-3 3Z"></path>
+            </svg>
+          </div>
+          <h3 class="feature-title">Soil Health Insights</h3>
+          <p class="feature-description">
+            Get actionable recommendations for soil management based on comprehensive analysis of soil nutrients, pH levels, and other critical factors.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-description">
+          Using AGRO CYCLE is simple. Follow these steps to get accurate predictions and insights for your crops.
+        </p>
+      </div>
+
+      <div class="steps-container">
+        <div class="step reveal delay-1">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3 class="step-title">Input Your Data</h3>
+            <p class="step-description">
+              Enter information about your soil conditions, weather patterns, and crop details through our user-friendly interface.
+            </p>
+          </div>
+        </div>
+
+        <div class="step reveal delay-2">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3 class="step-title">Get Predictions</h3>
+            <p class="step-description">
+              Our machine learning model processes your data and generates accurate yield predictions along with confidence levels.
+            </p>
+          </div>
+        </div>
+
+        <div class="step reveal delay-3">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3 class="step-title">Review Insights</h3>
+            <p class="step-description">
+              Explore detailed insights and visualizations about factors affecting your crop yield and recommendations for improvement.
+            </p>
+          </div>
+        </div>
+
+        <div class="step reveal delay-4">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3 class="step-title">Implement Recommendations</h3>
+            <p class="step-description">
+              Apply the suggested strategies to optimize your farming practices and maximize crop productivity and sustainability.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="features" style="padding: 4rem 0;">
+    <div class="container" style="text-align: center;">
+      <div class="reveal">
+        <h2 class="section-title">Ready to Optimize Your Crop Yield?</h2>
+        <p class="section-description" style="margin-bottom: 2rem;">
+          Start using AGRO CYCLE today and unlock the power of data-driven farming for better yields and sustainable agriculture.
+        </p>
+        <a href="data-input.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+          Start Now
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Logo and Description -->
+        <div>
+          <a href="index.html" class="logo">AGRO CYCLE</a>
+          <p class="footer-description" style="color: var(--agro-earth); max-width: 300px; margin-top: 1rem">
+            Advanced crop yield prediction platform using machine learning to enhance agricultural productivity and sustainability.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h3 class="footer-heading">Quick Links</h3>
+          <ul class="footer-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="data-input.html">Data Input</a></li>
+            <li><a href="results.html">Results</a></li>
+            <li><a href="insights.html">Insights</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Information -->
+        <div>
+          <h3 class="footer-heading">Contact Us</h3>
+          <address class="footer-address">
+            <p>GM University</p>
+            <p>P.B. Road, Davanagere</p>
+            <p>Davangere - 577006</p>
+            <p>Karnataka</p>
+            <p style="margin-top: 1rem">
+              <a href="mailto:info@gmu.ac.in">info@gmu.ac.in</a>
+            </p>
+            <p>
+              <a href="tel:+916361219778">+91 6361 219 778</a>
+            </p>
+          </address>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="currentYear"></span> AGRO CYCLE. All rights reserved.</p>
+        <p>Designed & Developed by <span style="font-weight: 500; color: var(--agro-green-dark)">RAJN TEAM</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Current year for footer copyright
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Reveal animation on scroll
+    function reveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add('active');
+        }
+      }
+    }
+
+    window.addEventListener('scroll', reveal);
+    // Trigger on page load
+    reveal();
+  </script>
+</body>
+</html>
